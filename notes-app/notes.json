@@ -1,1 +1,4 @@
-[{"title":"some title 2","body":"some body 2"},{"title":"some title 1","body":"some body 1"}]
+[
+	{ "title": "McFlurry", "body": "Got icream with good stuff inside" },
+	{ "title": "Banana Split", "body": "A very tasty treat" }
+]

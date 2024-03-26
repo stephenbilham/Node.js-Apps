@@ -12,12 +12,12 @@ yargs.command({
 	builder: {
 		title: {
 			describe: "note title",
-			demandOption: true, // moved demandOption inside title object
+			demandOption: true,
 			type: "string",
 		},
 		body: {
 			describe: "this is the body text",
-			demandOption: true, // moved demandOption inside body object
+			demandOption: true,
 			type: "string",
 		},
 	},
@@ -55,8 +55,8 @@ yargs.command({
 yargs.command({
 	command: "read",
 	describe: "reading a note",
-	handler: () => {
-		console.log("reading a note!");
+	handler: (argv) => {
+		notes.findNote(argv.title);
 	},
 });
 
