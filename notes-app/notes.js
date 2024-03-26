@@ -61,9 +61,9 @@ const listNotes = () => {
 const findNote = (title) => {
 	const notes = loadNotes();
 
-	console.log(title, notes);
 	const searchedNote = notes.find((el) => title === el.title);
-	console.log(searchedNote, "get here");
+
+	debugger;
 
 	if (!searchedNote) {
 		console.log(chalk.red.inverse("No note found!"));
