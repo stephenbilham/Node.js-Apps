@@ -13,11 +13,10 @@ const addNote = (title, body) => {
 
 	if (duplicates.length === 0) {
 		notes.push({ title, body });
-		console.log(chalk.green("New note added!"));
+		console.log(chalk.green.inverse("New note added!"));
 	} else {
-		console.log(chalk.blue("Duplicate Note!"));
+		console.log(chalk.red.inverse("Duplicate Note!"));
 	}
-
 	saveNotes(notes);
 };
 
@@ -29,7 +28,9 @@ const deleteNote = (title) => {
 
 	if (notesToKeep.length < notes.length) {
 		saveNotes(notesToKeep);
-		console.log(chalk.red("Note Deleted!"));
+		console.log(chalk.green.inverse("Note Deleted!"));
+	} else {
+		console.log(chalk.red.inverse("No note Found!"));
 	}
 };
 
@@ -47,8 +48,19 @@ const loadNotes = () => {
 	}
 };
 
+const listNotes = () => {
+	const notes = loadNotes();
+	if (!notes) {
+		console.log(chalk.red.inverse("No notes! Please add some."));
+	} else {
+		console.log(chalk.green.inverse("Your Notes:"));
+		notes.map((note) => console.log(chalk.yellow(note.title)));
+	}
+};
+
 module.exports = {
 	getNotes,
 	addNote,
 	deleteNote,
+	listNotes,
 };
