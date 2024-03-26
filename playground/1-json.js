@@ -8,14 +8,12 @@ const fs = require("fs");
 // const bookJSON = JSON.stringify(book);
 // fs.writeFileSync("1-json.json", bookJSON);
 
-// const dataBuffer = fs.readFileSync("1-json.json");
-// const dataJSON = dataBuffer.toString();
+// const dataJSON = fs.readFileSync("1-json.json");
 // const data = JSON.parse(dataJSON);
 
 // console.log(data.title);
 
-const dataObj = fs.readFileSync("1-json.json");
-const dataJSON = dataObj.toString();
+const dataJSON = fs.readFileSync("1-json.json");
 
 let data = JSON.parse(dataJSON);
 data = { ...data, name: "Stephen", age: "30" };
