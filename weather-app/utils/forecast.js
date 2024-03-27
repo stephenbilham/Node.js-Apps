@@ -4,20 +4,20 @@ const axios = require("axios");
 const forecast = (longitude, latitude, callback) => {
 	const apiUrl = "http://api.weatherstack.com/current";
 	const accessKey = "26763fc2175213469456dad1c053c430";
-	const params = {
-		access_key: accessKey,
-		query: `${latitude},${longitude}`,
-		units: "f",
-	};
-
 	axios
-		.get(apiUrl, { params })
+		.get(apiUrl, {
+			params: {
+				access_key: accessKey,
+				query: `${latitude},${longitude}`,
+				units: "f",
+			},
+		})
 		.then((response) => {
 			const { temperature, precip, weather_descriptions } =
 				response.data.current;
 			const forecastData = {
 				temperature,
-				precipitation: precip,
+				precip,
 				weatherDescription: weather_descriptions[0],
 			};
 			callback(null, forecastData);

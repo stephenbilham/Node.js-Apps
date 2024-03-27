@@ -22,7 +22,6 @@ const forecast = require("./utils/forecast");
 // 		});
 // };
 
-// Main function to fetch weather and geocode
 // (async () => {
 // 	try {
 // 		// // Fetch weather
@@ -37,19 +36,20 @@ const forecast = require("./utils/forecast");
 // 	}
 // })();
 
+///// GEO CODE /////
+
 geocode("boston", (error, data) => {
 	if (error) {
 		return console.error("Error geocoding:", error);
-	} else {
-		const { longitude, latitude, location } = data;
-		forecast(longitude, latitude, (error, forecastData) => {
-			if (error) {
-				return console.error("Error fetching forecast data:", error);
-			} else {
-				console.log(`Forecast data for ${location}:`, forecastData);
-			}
-		});
 	}
-});
 
-// Forcast
+	const { longitude, latitude, location } = data;
+
+	//forcast query
+	forecast(longitude, latitude, (error, forecastData) => {
+		if (error) {
+			return console.error("Error fetching forecast data:", error);
+		}
+		console.log(`Forecast data for ${location}:`, forecastData);
+	});
+});
