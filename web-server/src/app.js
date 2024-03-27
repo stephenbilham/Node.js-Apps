@@ -49,6 +49,22 @@ app.get("/weather", (req, res) => {
 	});
 });
 
+app.get("/help/*", (req, res) => {
+	res.render("404", {
+		title: "404",
+		name: "Stephen Bilham",
+		errorMessage: "Help article not found",
+	});
+});
+
+app.get("*", (req, res) => {
+	res.render("404", {
+		title: "404",
+		name: "Stephen Bilham",
+		errorMessage: "Page not found",
+	});
+});
+
 // start server
 app.listen(port, () => {
 	console.log("Listening on port", port);
