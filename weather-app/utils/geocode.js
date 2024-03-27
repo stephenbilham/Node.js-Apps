@@ -9,15 +9,16 @@ const geocode = (address, callback) => {
 				limit: 1,
 			},
 		})
-		.then((response) => {
-			const { data } = response;
-
+		.then(({ data }) => {
 			if (data.features.length === 0) {
 				return callback("Unable to find location, please try again", null);
 			}
 
-			const { place_name, center } = data.features[0];
-			const [longitude, latitude] = center;
+			const {
+				place_name,
+				center: [longitude, latitude],
+			} = data.features[0];
+
 			const transformedData = { location: place_name, longitude, latitude };
 
 			callback(null, transformedData);

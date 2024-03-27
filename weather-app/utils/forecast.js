@@ -12,9 +12,8 @@ const forecast = (longitude, latitude, callback) => {
 				units: "f",
 			},
 		})
-		.then((response) => {
-			const { temperature, precip, weather_descriptions } =
-				response.data.current;
+		.then(({ data }) => {
+			const { temperature, precip, weather_descriptions } = data.current;
 			const forecastData = {
 				temperature,
 				precip,
