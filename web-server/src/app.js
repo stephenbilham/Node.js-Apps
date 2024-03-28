@@ -1,6 +1,8 @@
 const path = require("path");
 const express = require("express");
 const hbs = require("hbs");
+const geocode = require("./utils/geocode");
+const forecast = require("../../weather-app/utils/forecast");
 
 const app = express();
 const port = 3000;
@@ -43,9 +45,44 @@ app.get("/help", (req, res) => {
 });
 
 app.get("/weather", (req, res) => {
+	if (!req.query.address) {
+		return res.send({
+			error: "You must provide an address!",
+		});
+	}
+
+	geocode(req.query.address, (error, data) => {
+		if (error) {
+			return res.send({ error });
+		}
+
+		if (!data || !data.latitude || !data.longitude) {
+			// Check if data is null or undefined, or if latitude and longitude are missing
+			return res.send({ error: "Invalid location data" });
+		}
+
+		const { latitude, longitude, location } = data;
+
+		forecast(longitude, latitude, (error, forecastData) => {
+			if (error) {
+				return res.send({ error });
+			}
+
+			res.send({
+				forecast: forecastData,
+				location,
+			});
+		});
+	});
+});
+
+app.get("/products", (req, res) => {
+	if (!req.query.search) {
+		return res.send({ error: "You must provide a search term" });
+	}
+
 	res.send({
-		title: "h1",
-		location: "Sd",
+		product: [],
 	});
 });
 

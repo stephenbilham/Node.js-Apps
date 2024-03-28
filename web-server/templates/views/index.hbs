@@ -1,14 +1,22 @@
-<html lang="en">
-	<head>
-		<title>{{title}}</title>
-		<link rel="stylesheet" href="/css/styles.css" />
-	</head>
-	<header>
-		{{>header}}
-	</header>
-	<body>
-	</body>
-	<footer>
-		{{>footer}}
-	</footer>
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Weather</title>
+    <link rel="icon" href="/img/weather.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/app.js" type="module" ></script>
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+
+        <p>Use this site to get your weather!</p>
+    </div>
+
+    {{>footer}}
+</body>
+
 </html>
