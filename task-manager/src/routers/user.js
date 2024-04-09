@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
@@ -30,6 +31,7 @@ router.get("/users/:id", async (req, res) => {
 router.post("/users", async (req, res) => {
 	try {
 		const user = new User(req.body);
+
 		await user.save();
 		res.send(user).status(201);
 	} catch (e) {
@@ -40,18 +42,22 @@ router.post("/users", async (req, res) => {
 router.put("/users/:id", async (req, res) => {
 	try {
 		const userId = req.params.id;
-		const user = await User.findByIdAndUpdate(userId, req.body, {
-			new: true,
-			runValidators: true,
-		});
+
+		const user = await User.findById(userId);
 
 		if (!user) {
 			return res.status(404).send("User not found!");
 		}
 
+		// Update the user with the data from req.body
+		Object.assign(user, req.body);
+
+		// Save the updated user
+		await user.save();
+
 		res.status(200).send(user);
 	} catch (e) {
-		res.status(404).send("User not found!");
+		res.status(404).send(e);
 	}
 });
 
