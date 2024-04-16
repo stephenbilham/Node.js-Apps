@@ -57,6 +57,7 @@ userSchema.methods.hashPassword = async function () {
 	this.password = await bcrypt.hash(this.password, salt);
 };
 
+// Method is for individual instance
 userSchema.methods.generateAuthToken = async function () {
 	const user = this;
 
@@ -68,6 +69,17 @@ userSchema.methods.generateAuthToken = async function () {
 	return token;
 };
 
+// this method is not like others it transforms all routes without being called when the data is stringified behind the scenes all endpoints wont return these deleted values
+userSchema.methods.toJSON = function () {
+	const user = this;
+	const userObject = user.toObject();
+	delete userObject.password;
+	delete userObject.tokens;
+
+	return userObject;
+};
+
+// static is for upper case User model
 userSchema.statics.findByCredentials = async function (email, password) {
 	const user = await User.findOne({ email });
 
