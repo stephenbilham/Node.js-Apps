@@ -1,12 +1,19 @@
 const express = require("express");
 const User = require("../models/user");
+const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get("/users", async (req, res) => {
+// Add the 'authMiddleware' to the route
+router.get("/users/me", authMiddleware, async (req, res) => {
 	try {
-		const users = await User.find({});
-		res.send(users).status(201);
+		const user = req.user;
+
+		if (!user) {
+			return res.status(404).send({ error: "No authenticated user found" });
+		}
+
+		res.send(user);
 	} catch (e) {
 		res.status(400).send(e);
 	}
@@ -48,6 +55,16 @@ router.post("/users/login", async (req, res) => {
 	} catch (e) {
 		console.error(e);
 		res.status(500).send(e);
+	}
+});
+
+router.post("/users/signup", async (req, res) => {
+	try {
+		const user = new User(req.body);
+		const token = await user.generateAuthToken(user._id);
+		res.status(201).send({ user, token });
+	} catch (e) {
+		res.status(400).send(e);
 	}
 });
 

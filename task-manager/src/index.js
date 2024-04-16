@@ -7,6 +7,20 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
+// app.use((req, res, next) => {
+// 	if (req.method === "GET") {
+// 		res.send("GET requests are disabled");
+// 	} else {
+// 		next();
+// 	}
+// });
+
+// app.use((req, res, next) => {
+// 	if (req.method !== null) {
+// 		res.send(503);
+// 	}
+// });
+
 app.use(express.json());
 app.use(UserRouter);
 app.use(TaskRouter);
