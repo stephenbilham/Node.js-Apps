@@ -24,14 +24,15 @@ router.get("/tasks", async (req, res) => {
 router.put("/tasks/:id", async (req, res) => {
 	try {
 		const taskId = req.params.id;
-		const task = await Task.findByIdAndUpdate(taskId, req.body, {
-			new: true,
-			runValidators: true,
-		});
+		const task = await Task.findById(taskId);
 
 		if (!task) {
 			return res.status(404).send("Task not found!");
 		}
+
+		Object.assign(task, req.body);
+
+		await task.save();
 
 		res.status(200).send(task);
 	} catch (e) {
