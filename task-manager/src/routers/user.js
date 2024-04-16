@@ -58,6 +58,31 @@ router.post("/users/login", async (req, res) => {
 	}
 });
 
+router.post("/users/logout", authMiddleware, async (req, res) => {
+	try {
+		// we filter because we want to logout of a single device (if i logout on comp dont want on phone) all different tokens
+		req.user.tokens = req.user.tokens.filter((token) => {
+			return token.token !== req.token;
+		});
+		await req.user.save();
+
+		res.send();
+	} catch (e) {
+		res.status(500).send();
+	}
+});
+
+router.post("/users/logoutAll", authMiddleware, async (req, res) => {
+	try {
+		console.log("got here");
+		req.user.tokens = [];
+		await req.user.save();
+		res.send();
+	} catch (e) {
+		res.status(500).send();
+	}
+});
+
 router.post("/users/signup", async (req, res) => {
 	try {
 		const user = new User(req.body);
