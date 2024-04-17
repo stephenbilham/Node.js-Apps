@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Task = require("../models/task");
 
 const userSchema = new mongoose.Schema({
 	name: {
@@ -49,6 +50,13 @@ const userSchema = new mongoose.Schema({
 			},
 		},
 	],
+});
+
+// virtual property is not actual data stored in the DB its a relatonship between two entities (user/tasks)
+userSchema.virtual("tasks", {
+	ref: "Task",
+	localField: "_id",
+	foreignField: "owner",
 });
 
 // Encrypt password using bcrypt
@@ -100,6 +108,13 @@ userSchema.pre("save", async function (next) {
 	if (this.isModified("password")) {
 		await this.hashPassword();
 	}
+	next();
+});
+
+// Delete all user tasks when user deletes account
+userSchema.pre("remove", async function (next) {
+	const user = this;
+	await Task.deleteMany({ owner: user._id });
 	next();
 });
 

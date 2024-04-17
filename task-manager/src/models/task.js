@@ -10,6 +10,11 @@ const taskSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
+	owner: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: "User", // Add a reference to the User model if you have one
+	},
 });
 
 taskSchema.pre("save", async function (next) {
