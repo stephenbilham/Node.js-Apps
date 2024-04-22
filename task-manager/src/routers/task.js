@@ -17,12 +17,39 @@ router.post("/tasks", authMiddleware, async (req, res) => {
 		res.status(400).send(e);
 	}
 });
+
+// GET /tasks?completed=true
+// GET /tasks?limit=10&skip=0
+// GET /tasks?sortBy=createdAt:asc
+
 router.get("/tasks", authMiddleware, async (req, res) => {
 	// both work playing with virtual methods though
 	try {
 		// const task = await Task.find({ owner: req.user._id });
 		// res.send(task).status(201);
-		await req.user.populate("tasks").execPopulate();
+		const match = {};
+		const sort = {};
+
+		if (req.query.completed) {
+			match.completed = req.query.completed === "true";
+		}
+
+		if (req.query.sortBy) {
+			const keyValue = req.query.sortBy.split(":");
+			sort[keyValue[0]] = keyValue[1] === "desc" ? -1 : 1;
+		}
+
+		await req.user
+			.populate({
+				path: "tasks",
+				match,
+				options: {
+					limit: parseInt(req.query.limit), // pagination
+					skip: parseInt(req.query.skip),
+					sort,
+				},
+			})
+			.execPopulate();
 		res.send(req.user.tasks).status(201);
 	} catch (e) {
 		res.status(400).send(e);
