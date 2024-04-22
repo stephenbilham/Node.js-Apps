@@ -1,8 +1,14 @@
 const express = require("express");
 const User = require("../models/user");
 const authMiddleware = require("../middleware/auth");
+const multer = require("multer");
 
 const router = express.Router();
+
+// multer middleware
+const upload = multer({
+	dest: "avatar",
+});
 
 // Add the 'authMiddleware' to the route
 router.get("/users/me", authMiddleware, async (req, res) => {
@@ -75,6 +81,10 @@ router.post("/users/signup", async (req, res) => {
 	} catch (e) {
 		res.status(400).send(e);
 	}
+});
+
+router.post("/users/me/avatar", upload.single("avatar"), (req, res) => {
+	res.send();
 });
 
 router.patch("/users/me", authMiddleware, async (req, res) => {

@@ -2,24 +2,21 @@ const express = require("express");
 const mongoose = require("./db/mongoose"); // all though this isnt beeing called express is understanding its here (Can remove the const mongoose)
 const UserRouter = require("./routers/user");
 const TaskRouter = require("./routers/task");
+const multer = require("multer");
 
 const app = express();
 
 const port = process.env.PORT || 3000;
 
-// app.use((req, res, next) => {
-// 	if (req.method === "GET") {
-// 		res.send("GET requests are disabled");
-// 	} else {
-// 		next();
-// 	}
-// });
+// multer middleware
+const upload = multer({
+	dest: "images",
+});
 
-// app.use((req, res, next) => {
-// 	if (req.method !== null) {
-// 		res.send(503);
-// 	}
-// });
+//
+app.post("/upload", upload.single("upload"), (req, res, next) => {
+	res.send();
+});
 
 app.use(express.json());
 app.use(UserRouter);
