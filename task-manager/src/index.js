@@ -8,16 +8,6 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-// multer middleware
-const upload = multer({
-	dest: "images",
-});
-
-//
-app.post("/upload", upload.single("upload"), (req, res, next) => {
-	res.send();
-});
-
 app.use(express.json());
 app.use(UserRouter);
 app.use(TaskRouter);
